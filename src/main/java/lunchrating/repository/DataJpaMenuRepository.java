@@ -10,8 +10,11 @@ public class DataJpaMenuRepository implements MenuRepository {
 
     private final CrudMenuRepository crudRepository;
 
-    public DataJpaMenuRepository(CrudMenuRepository crudRepository) {
+    private final CrudRestaurantRepository crudRestaurantRepository;
+
+    public DataJpaMenuRepository(CrudMenuRepository crudRepository, CrudRestaurantRepository crudRestaurantRepository) {
         this.crudRepository = crudRepository;
+        this.crudRestaurantRepository = crudRestaurantRepository;
     }
 
     @Override
@@ -20,17 +23,24 @@ public class DataJpaMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Menu get(Integer id) {
-        return crudRepository.findById(id).orElse(null);
+    public Menu get(Integer id, Integer restId) {
+        return crudRepository.findById(id)
+                .filter(menu -> menu.getRestaurant().getId().equals(restId))
+                .orElse(null);
     }
 
     @Override
-    public boolean delete(Integer id) {
-        return crudRepository.delete(id) != 0;
+    public boolean delete(Integer id, Integer restId) {
+        return crudRepository.delete(id, restId) != 0;
     }
 
     @Override
-    public Menu save(Menu menu) {
+    public Menu save(Menu menu, Integer restId) {
+        if (menu.getId() != null && get(menu.getId(), restId) == null) {
+            return null;
+        }
+
+        menu.setRestaurant(crudRestaurantRepository.getOne(restId));
         return crudRepository.save(menu);
     }
 }
