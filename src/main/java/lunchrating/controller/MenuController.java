@@ -62,6 +62,7 @@ public class MenuController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@PathVariable int restId, @RequestBody Menu menu, @PathVariable int id) {
         log.info("update {} with id={}", menu, id);
         ValidationUtil.assureIdConsistent(menu, id);

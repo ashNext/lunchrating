@@ -6,9 +6,12 @@ import lunchrating.service.DishService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,14 +54,18 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(REST_URL_R100000_M100002)
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL_R100000_M100002)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Сало\",\"price\":20000}")).andReturn();
+                .content("{\"name\":\"Meat\",\"price\":20000}"))
+                .andReturn();
 
-        Dish dish = service.get(100020, 100002);
-        assertNotNull(dish);
-        assertEquals("Сало", dish.getName());
-        assertEquals(20000, dish.getPrice());
+        Dish created = getMapper().readValue(result.getResponse().getContentAsString(), Dish.class);
+        assertEquals("Meat", created.getName());
+        assertEquals(20000, created.getPrice());
+
+        Dish dish = service.get(created.getId(), 100002);
+        assertEquals(created.getName(), dish.getName());
+        assertEquals(created.getPrice(), dish.getPrice());
     }
 
     @Test
@@ -69,6 +76,7 @@ class DishControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         Dish dish = service.get(100006, 100002);
+        assertEquals(100002, dish.getMenu().getId());
         assertEquals("Уха", dish.getName());
         assertEquals(7500, dish.getPrice());
     }
