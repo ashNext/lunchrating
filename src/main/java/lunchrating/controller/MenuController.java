@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +56,8 @@ public class MenuController {
         Menu created = service.create(menu, restId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
+                .buildAndExpand(Map.of("restId", restId, "id", created.getId()))
+                .toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 

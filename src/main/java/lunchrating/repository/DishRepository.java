@@ -8,9 +8,9 @@ public interface DishRepository {
 
     List<Dish> getAll(Integer menuId);
 
-    Dish get(Integer id);
+    Dish get(Integer id, Integer menuId);
 
-    boolean delete(Integer id);
+    boolean delete(Integer id, Integer menuId);
 
-    Dish save(Dish dish);
+    Dish save(Dish dish, Integer menuId);
 }

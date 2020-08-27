@@ -13,8 +13,8 @@ import java.util.List;
 public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
     @Modifying
     @Transactional
-    @Query("DELETE FROM Dish d WHERE d.id=:id")
-    int delete(@Param("id") int id);
+    @Query("DELETE FROM Dish d WHERE d.id=:id and d.menu.id=:menuId")
+    int delete(@Param("id") int id, @Param("menuId") int menuId);
 
     @Query("SELECT d FROM Dish d WHERE d.menu.id=:menuId")
     List<Dish> getAll(@Param("menuId") int menuId);

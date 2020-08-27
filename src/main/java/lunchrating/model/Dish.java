@@ -1,5 +1,6 @@
 package lunchrating.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -9,12 +10,13 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Dish")
-public class Dish extends AbstractNamedEntity{
+public class Dish extends AbstractNamedEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
+    @JsonIgnore
     private Menu menu;
 
     @Column(name = "price", nullable = false)

@@ -10,8 +10,11 @@ public class DataJpaDishRepository implements DishRepository {
 
     private final CrudDishRepository crudRepository;
 
-    public DataJpaDishRepository(CrudDishRepository crudRepository) {
+    private final CrudMenuRepository crudMenuRepository;
+
+    public DataJpaDishRepository(CrudDishRepository crudRepository, CrudMenuRepository crudMenuRepository) {
         this.crudRepository = crudRepository;
+        this.crudMenuRepository = crudMenuRepository;
     }
 
     @Override
@@ -20,17 +23,24 @@ public class DataJpaDishRepository implements DishRepository {
     }
 
     @Override
-    public Dish get(Integer id) {
-        return crudRepository.findById(id).orElse(null);
+    public Dish get(Integer id, Integer menuId) {
+        return crudRepository.findById(id)
+                .filter(dish -> dish.getMenu().getId().equals(menuId))
+                .orElse(null);
     }
 
     @Override
-    public boolean delete(Integer id) {
-        return crudRepository.delete(id) != 0;
+    public boolean delete(Integer id, Integer menuId) {
+        return crudRepository.delete(id, menuId) != 0;
     }
 
     @Override
-    public Dish save(Dish dish) {
+    public Dish save(Dish dish, Integer menuId) {
+        if (dish.getId() != null && get(dish.getId(), menuId) == null) {
+            return null;
+        }
+
+        dish.setMenu(crudMenuRepository.getOne(menuId));
         return crudRepository.save(dish);
     }
 }
