@@ -23,8 +23,8 @@ public class RestaurantService {
         return repository.get(id);
     }
 
-    public void delete(Integer id) {
-        repository.delete(id);
+    public boolean delete(Integer id) {
+        return repository.delete(id);
     }
 
     public Restaurant create(Restaurant restaurant) {

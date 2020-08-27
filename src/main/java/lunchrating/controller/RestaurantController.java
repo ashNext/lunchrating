@@ -2,6 +2,7 @@ package lunchrating.controller;
 
 import lunchrating.model.Restaurant;
 import lunchrating.service.RestaurantService;
+import lunchrating.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -34,21 +35,22 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public Restaurant get(@PathVariable Integer id) {
+    public Restaurant get(@PathVariable int id) {
         log.info("get {}", id);
-        return service.get(id);
+        return ValidationUtil.checkNotFoundWithId(service.get(id), id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable int id) {
         log.info("delete {}", id);
-        service.delete(id);
+        ValidationUtil.checkNotFoundWithId(service.delete(id), id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
+        ValidationUtil.checkNew(restaurant);
         Restaurant created = service.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -57,9 +59,9 @@ public class RestaurantController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody Restaurant restaurant, @PathVariable Integer id) {
+    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update {} with id={}", restaurant, id);
-        restaurant.setId(id);
+        ValidationUtil.assureIdConsistent(restaurant, id);
         service.update(restaurant);
     }
 }
