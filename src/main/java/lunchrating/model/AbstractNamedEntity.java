@@ -1,13 +1,9 @@
 package lunchrating.model;
 
-import org.hibernate.validator.constraints.SafeHtml;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import static org.hibernate.validator.constraints.SafeHtml.WhiteListType.NONE;
 
 @MappedSuperclass
 public class AbstractNamedEntity extends AbstractBaseEntity {
