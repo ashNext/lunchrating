@@ -4,7 +4,7 @@ DELETE FROM user;
 DELETE FROM dish;
 DELETE FROM menu;
 DELETE FROM rest;
--- ALTER SEQUENCE global_seq RESTART WITH 100000;
+ALTER SEQUENCE global_seq RESTART WITH 100000;
 
 INSERT INTO rest (name)
 VALUES ('Restaurant 1'),
@@ -28,11 +28,11 @@ VALUES (100002, 'Борщ', 10000), --6
        (100005, 'Борщ', 10500),
        (100005, 'Сосиски', 11000); --15
 
-INSERT INTO user (name)
-VALUES ('Admin'), --16
-       ('User1'),
-       ('User1'),
-       ('User3'); --19
+INSERT INTO user (name, password)
+VALUES ('Admin', 'admin'), --16
+       ('User1', 'user1'),
+       ('User2', 'user2'),
+       ('User3', 'user3'); --19
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('ADMIN', 100016),
