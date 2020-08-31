@@ -68,4 +68,10 @@ public class MenuController {
         ValidationUtil.assureIdConsistent(menu, id);
         service.update(menu, restId);
     }
+
+    @GetMapping("/{id}/with-dish")
+    public Menu getWithDishes(@PathVariable int restId, @PathVariable int id) {
+        log.info("get {}", id);
+        return ValidationUtil.checkNotFoundWithId(service.getWithDishes(id, restId), id);
+    }
 }

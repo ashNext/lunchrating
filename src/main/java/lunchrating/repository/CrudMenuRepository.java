@@ -1,6 +1,7 @@
 package lunchrating.repository;
 
 import lunchrating.model.Menu;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,8 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
 
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId")
     List<Menu> getAll(@Param("restId") int restId);
+
+    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
+    Menu getWithDishes(@Param("id") int id, @Param("restId") int restId);
 }

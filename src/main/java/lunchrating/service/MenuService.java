@@ -34,4 +34,8 @@ public class MenuService {
     public void update(Menu restaurant, Integer restId) {
         repository.save(restaurant, restId);
     }
+
+    public Menu getWithDishes(Integer id, Integer restId) {
+        return repository.getWithDishes(id, restId);
+    }
 }

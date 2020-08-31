@@ -74,4 +74,13 @@ class MenuControllerTest extends AbstractControllerTest {
         assertEquals(100000, menu.getRestaurant().getId());
         assertEquals("2020-08-01", menu.getDate().toString());
     }
+
+    @Test
+    void getWithDishes() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "100002/with-dish"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"id\":100002,\"date\":[2020,8,26],\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}"));
+    }
 }

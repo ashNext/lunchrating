@@ -13,4 +13,6 @@ public interface MenuRepository {
     boolean delete(Integer id, Integer restId);
 
     Menu save(Menu menu, Integer restId);
+
+    Menu getWithDishes(Integer id, Integer restId);
 }

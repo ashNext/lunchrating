@@ -43,4 +43,9 @@ public class DataJpaMenuRepository implements MenuRepository {
         menu.setRestaurant(crudRestaurantRepository.getOne(restId));
         return crudRepository.save(menu);
     }
+
+    @Override
+    public Menu getWithDishes(Integer id, Integer restId) {
+        return crudRepository.getWithDishes(id, restId);
+    }
 }
