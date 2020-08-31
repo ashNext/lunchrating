@@ -2,6 +2,7 @@ package lunchrating.repository;
 
 import lunchrating.model.Menu;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MenuRepository {
@@ -15,4 +16,6 @@ public interface MenuRepository {
     Menu save(Menu menu, Integer restId);
 
     Menu getWithDishes(Integer id, Integer restId);
+
+    Menu getWithDishesOnDate(int restId, LocalDate date);
 }

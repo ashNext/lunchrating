@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -78,6 +81,16 @@ class MenuControllerTest extends AbstractControllerTest {
     @Test
     void getWithDishes() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "100002/with-dishes"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"id\":100002,\"date\":[2020,8,26],\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}"));
+    }
+
+    @Test
+    void getWithDishesOnDate()  throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "with-dishes")
+                .param("date", "2020-08-26"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

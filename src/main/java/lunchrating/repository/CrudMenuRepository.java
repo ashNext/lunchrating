@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -23,4 +24,8 @@ public interface CrudMenuRepository extends JpaRepository<Menu, Integer> {
     @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.id=:id AND m.restaurant.id=:restId")
     Menu getWithDishes(@Param("id") int id, @Param("restId") int restId);
+
+    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId AND m.date=:date")
+    Menu getWithDishesOnDate(@Param("restId") int restId, @Param("date") LocalDate date);
 }

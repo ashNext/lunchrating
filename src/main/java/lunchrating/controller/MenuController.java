@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -73,5 +76,16 @@ public class MenuController {
     public Menu getWithDishes(@PathVariable int restId, @PathVariable int id) {
         log.info("get {} with dishes", id);
         return ValidationUtil.checkNotFoundWithId(service.getWithDishes(id, restId), id);
+    }
+
+    @GetMapping("/with-dishes")
+    public Menu getWithDishesOnDate(@PathVariable int restId, @RequestParam @Nullable LocalDate date) {
+        if (date == null) {
+//            date = LocalDate.now();
+            date = LocalDate.of(2020, Month.AUGUST, 27);
+        }
+
+        log.info("get with dishes on date {}", date);
+        return ValidationUtil.checkNotFound(service.getWithDishesOnDate(restId, date), "date=" + date);
     }
 }

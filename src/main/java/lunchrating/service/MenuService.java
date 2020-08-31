@@ -4,6 +4,7 @@ import lunchrating.model.Menu;
 import lunchrating.repository.MenuRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -37,5 +38,9 @@ public class MenuService {
 
     public Menu getWithDishes(Integer id, Integer restId) {
         return repository.getWithDishes(id, restId);
+    }
+
+    public Menu getWithDishesOnDate(Integer restId, LocalDate date) {
+        return repository.getWithDishesOnDate(restId, date);
     }
 }

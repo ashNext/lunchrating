@@ -3,6 +3,7 @@ package lunchrating.repository;
 import lunchrating.model.Menu;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -47,5 +48,10 @@ public class DataJpaMenuRepository implements MenuRepository {
     @Override
     public Menu getWithDishes(Integer id, Integer restId) {
         return crudRepository.getWithDishes(id, restId);
+    }
+
+    @Override
+    public Menu getWithDishesOnDate(int restId, LocalDate date) {
+        return crudRepository.getWithDishesOnDate(restId, date);
     }
 }
