@@ -69,9 +69,9 @@ public class MenuController {
         service.update(menu, restId);
     }
 
-    @GetMapping("/{id}/with-dish")
+    @GetMapping("/{id}/with-dishes")
     public Menu getWithDishes(@PathVariable int restId, @PathVariable int id) {
-        log.info("get {}", id);
+        log.info("get {} with dishes", id);
         return ValidationUtil.checkNotFoundWithId(service.getWithDishes(id, restId), id);
     }
 }

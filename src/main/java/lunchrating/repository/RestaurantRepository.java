@@ -13,4 +13,6 @@ public interface RestaurantRepository {
     boolean delete(Integer id);
 
     Restaurant save(Restaurant restaurant);
+
+    Restaurant getWithMenus(Integer id);
 }

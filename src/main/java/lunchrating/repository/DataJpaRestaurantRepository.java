@@ -33,4 +33,9 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     public Restaurant save(Restaurant restaurant) {
         return crudRepository.save(restaurant);
     }
+
+    @Override
+    public Restaurant getWithMenus(Integer id) {
+        return crudRepository.getWithMenus(id);
+    }
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 @RestController
@@ -64,5 +66,11 @@ public class RestaurantController {
         log.info("update {} with id={}", restaurant, id);
         ValidationUtil.assureIdConsistent(restaurant, id);
         service.update(restaurant);
+    }
+
+    @GetMapping("/{id}/with-menus")
+    public Restaurant getWithMenus(@PathVariable int id) {
+        log.info("get {} with menus", id);
+        return ValidationUtil.checkNotFoundWithId(service.getWithMenus(id), id);
     }
 }

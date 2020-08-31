@@ -77,7 +77,7 @@ class MenuControllerTest extends AbstractControllerTest {
 
     @Test
     void getWithDishes() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "100002/with-dish"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "100002/with-dishes"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
