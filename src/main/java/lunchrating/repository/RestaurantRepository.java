@@ -1,7 +1,9 @@
 package lunchrating.repository;
 
 import lunchrating.model.Restaurant;
+import lunchrating.to.RestaurantTo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RestaurantRepository {
@@ -15,4 +17,10 @@ public interface RestaurantRepository {
     Restaurant save(Restaurant restaurant);
 
     Restaurant getWithMenus(Integer id);
+
+    Restaurant getWithMenusOnDate(int id, LocalDate date);
+
+    List<RestaurantTo> getAllWithRate();
+
+    List<RestaurantTo> getAllWithRateOnDate(LocalDate date);
 }

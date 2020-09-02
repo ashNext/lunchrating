@@ -23,12 +23,30 @@ class RestaurantControllerTest extends AbstractControllerTest {
     private RestaurantService service;
 
     @Test
-    void getAll() throws Exception {
+    void getAllWithRateOnDate_WithNullDate() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\"},{\"id\":100001,\"name\":\"Restaurant 2\"}]"));
+                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":1},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":2}]"));
+    }
+
+    @Test
+    void getAllWithRateOnDate_WithDate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).param("date", "2020-08-26"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":2},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":1}]"));
+    }
+
+    @Test
+    void getAllWithRate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "all-time"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":3},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":3}]"));
     }
 
     @Test
@@ -75,11 +93,20 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getWithMenus() throws Exception {
+    void getWithMenusOnDate_WithNullDate() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100002,\"date\":2020-08-26,\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]},{\"id\":100003,\"date\":2020-08-27,\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}]}"));
+                .andExpect(content().json("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100003,\"date\":\"2020-08-27\",\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}]}"));
+    }
+
+    @Test
+    void getWithMenusOnDate_WithDate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus").param("date", "2020-08-26"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100002,\"date\":\"2020-08-26\",\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}]}"));
     }
 }

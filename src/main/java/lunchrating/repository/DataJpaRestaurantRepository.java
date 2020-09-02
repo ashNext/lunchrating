@@ -1,8 +1,10 @@
 package lunchrating.repository;
 
 import lunchrating.model.Restaurant;
+import lunchrating.to.RestaurantTo;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -37,5 +39,20 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     @Override
     public Restaurant getWithMenus(Integer id) {
         return crudRepository.getWithMenus(id);
+    }
+
+    @Override
+    public Restaurant getWithMenusOnDate(int id, LocalDate date) {
+        return crudRepository.getWithMenusOnDate(id, date);
+    }
+
+    @Override
+    public List<RestaurantTo> getAllWithRate() {
+        return crudRepository.getAllWithRate();
+    }
+
+    @Override
+    public List<RestaurantTo> getAllWithRateOnDate(LocalDate date) {
+        return crudRepository.getAllWithRateOnDate(date);
     }
 }

@@ -2,12 +2,14 @@ package lunchrating.controller;
 
 import lunchrating.model.Restaurant;
 import lunchrating.service.RestaurantService;
+import lunchrating.to.RestaurantTo;
 import lunchrating.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,9 +33,19 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public List<Restaurant> getAll() {
-        log.info("getAll");
-        return service.getAll();
+    public List<RestaurantTo> getAllWithRateOnDate(@RequestParam @Nullable LocalDate date) {
+        if (date == null) {
+//            date = LocalDate.now();
+            date = LocalDate.of(2020, Month.AUGUST, 27);
+        }
+        log.info("getAll on date={}", date);
+        return service.getAllWithRateOnDate(date);
+    }
+
+    @GetMapping("all-time")
+    public List<RestaurantTo> getAllWithRate() {
+        log.info("getAll for all time");
+        return service.getAllWithRate();
     }
 
     @GetMapping("/{id}")
@@ -69,8 +81,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}/with-menus")
-    public Restaurant getWithMenus(@PathVariable int id) {
-        log.info("get {} with menus", id);
-        return ValidationUtil.checkNotFoundWithId(service.getWithMenus(id), id);
+    public Restaurant getWithMenusOnDate(@PathVariable int id, @RequestParam @Nullable LocalDate date) {
+        if (date == null) {
+//            date = LocalDate.now();
+            date = LocalDate.of(2020, Month.AUGUST, 27);
+        }
+        log.info("get {} with menus on date={}", id, date);
+        return ValidationUtil.checkNotFoundWithId(service.getWithMenusOnDate(id, date), id);
     }
 }
