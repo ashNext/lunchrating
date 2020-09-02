@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static lunchrating.TestUtil.nowDate;
 import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,7 +34,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithRateOnDate_WithDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).param("date", "2020-08-26"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).param("date", nowDate(-1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -98,15 +99,16 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100003,\"date\":\"2020-08-27\",\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}]}"));
+                .andExpect(content().json(String.format("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100003,\"date\":\"%s\",\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}]}", nowDate())));
     }
 
     @Test
     void getWithMenusOnDate_WithDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus").param("date", "2020-08-26"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus")
+                .param("date", nowDate(-1)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100002,\"date\":\"2020-08-26\",\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}]}"));
+                .andExpect(content().json(String.format("{\"id\":100000,\"name\":\"Restaurant 1\",\"menus\":[{\"id\":100002,\"date\":\"%s\",\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}]}", nowDate(-1))));
     }
 }

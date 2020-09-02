@@ -23,7 +23,8 @@ public class DateFormatter {
 
         private static @Nullable
         LocalDate parseLocalDate(@Nullable String str) {
-            return StringUtils.isEmpty(str) ? null : LocalDate.parse(str);
+            return StringUtils.isEmpty(str) ? null :
+                    str.toLowerCase().equals("today") ? LocalDate.now() : LocalDate.parse(str);
         }
     }
 }
