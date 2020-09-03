@@ -29,10 +29,10 @@ VALUES (100002, 'Борщ', 10000), --6
        (100005, 'Сосиски', 11000); --15
 
 INSERT INTO user (name, password)
-VALUES ('Admin', 'admin'), --16
-       ('User1', 'user1'),
-       ('User2', 'user2'),
-       ('User3', 'user3'); --19
+VALUES ('Admin', '{noop}admin'), --16
+       ('User1', '{noop}user1'),
+       ('User2', '{noop}user2'),
+       ('User3', '{noop}user3'); --19
 
 INSERT INTO user_roles (role, user_id)
 VALUES ('ADMIN', 100016),
