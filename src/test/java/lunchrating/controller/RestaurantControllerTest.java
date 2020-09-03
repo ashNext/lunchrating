@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static lunchrating.TestUtil.nowDate;
+import static lunchrating.TestUtil.userHttpBasic;
 import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,7 +26,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithRateOnDate_WithNullDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -34,7 +36,9 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithRateOnDate_WithDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).param("date", nowDate(-1)))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL)
+                .param("date", nowDate(-1))
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -43,7 +47,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithRate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "all-time"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "all-time")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -52,7 +57,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -61,7 +67,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + "100001"))
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + "100001")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertNull(service.get(100001));
@@ -71,7 +78,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void createWithLocation() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Rest3\"}"))
+                .content("{\"name\":\"Rest3\"}")
+                .with(userHttpBasic("Admin", "admin")))
                 .andReturn();
 
         Restaurant created = getMapper().readValue(result.getResponse().getContentAsString(), Restaurant.class);
@@ -85,7 +93,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL + "100000")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Restaurant 0\"}"))
+                .content("{\"name\":\"Restaurant 0\"}")
+                .with(userHttpBasic("Admin", "admin")))
                 .andExpect(status().isNoContent());
 
         Restaurant restaurant = service.get(100000);
@@ -95,7 +104,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getWithMenusOnDate_WithNullDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -105,7 +115,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     void getWithMenusOnDate_WithDate() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(REST_URL + "100000/with-menus")
-                .param("date", nowDate(-1)))
+                .param("date", nowDate(-1))
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

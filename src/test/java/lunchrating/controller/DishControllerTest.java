@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static lunchrating.TestUtil.userHttpBasic;
 import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,7 +29,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002)
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -37,7 +39,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002 + "100006"))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002 + "100006")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -46,7 +49,8 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL_R100000_M100002 + "100007"))
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL_R100000_M100002 + "100007")
+                .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertNull(service.get(100007, 100002));
@@ -56,7 +60,8 @@ class DishControllerTest extends AbstractControllerTest {
     void createWithLocation() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL_R100000_M100002)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Meat\",\"price\":20000}"))
+                .content("{\"name\":\"Meat\",\"price\":20000}")
+                .with(userHttpBasic("Admin", "admin")))
                 .andReturn();
 
         Dish created = getMapper().readValue(result.getResponse().getContentAsString(), Dish.class);
@@ -72,7 +77,8 @@ class DishControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(REST_URL_R100000_M100002 + "100006")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Уха\",\"price\":7500}"))
+                .content("{\"name\":\"Уха\",\"price\":7500}")
+                .with(userHttpBasic("Admin", "admin")))
                 .andExpect(status().isNoContent());
 
         Dish dish = service.get(100006, 100002);
