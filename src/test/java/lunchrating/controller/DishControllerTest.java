@@ -88,4 +88,17 @@ class DishControllerTest extends AbstractControllerTest {
         assertEquals("Уха", dish.getName());
         assertEquals(7500, dish.getPrice());
     }
+
+    @Test
+    void getUnAuth() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getForbidden() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000_M100002)
+                .with(userHttpBasic("User1", "user1")))
+                .andExpect(status().isForbidden());
+    }
 }

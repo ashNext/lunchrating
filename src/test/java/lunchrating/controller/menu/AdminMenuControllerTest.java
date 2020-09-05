@@ -1,7 +1,6 @@
-package lunchrating.controller;
+package lunchrating.controller.menu;
 
 import lunchrating.AbstractControllerTest;
-import lunchrating.controller.menu.AdminMenuController;
 import lunchrating.controller.restaurant.AdminRestaurantController;
 import lunchrating.model.Menu;
 import lunchrating.service.MenuService;
@@ -29,12 +28,12 @@ class AdminMenuControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000)
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "all")
                 .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(String.format("[{\"id\":100002,\"date\":%s},{\"id\":100003,\"date\":%s}]", nowDate(-1), nowDate())));
+                .andExpect(content().json(String.format("[{\"id\":100002,\"date\":\"%s\",\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]},{\"id\":100003,\"date\":\"%s\",\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}]", nowDate(-1), nowDate())));
     }
 
     @Test
@@ -44,7 +43,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(String.format("{\"id\":100002,\"date\":%s}", nowDate(-1))));
+                .andExpect(content().json(String.format("{\"id\":100002,\"date\":\"%s\",\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}", nowDate(-1))));
     }
 
     @Test
@@ -85,18 +84,8 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getWithDishes() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "100002/with-dishes")
-                .with(userHttpBasic("Admin", "admin")))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(String.format("{\"id\":100002,\"date\":%s,\"dishes\":[{\"id\":100006,\"name\":\"Борщ\",\"price\":10000},{\"id\":100007,\"name\":\"Хлеб\",\"price\":11500}]}", nowDate(-1))));
-    }
-
-    @Test
-    void getWithDishesOnDate_WithDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "with-dishes")
+    void getOnDate_WithDate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000)
                 .param("date", nowDate(-1))
                 .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
@@ -106,12 +95,25 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getWithDishesOnDate_WithNullDate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000 + "with-dishes")
+    void getOnDate_WithNullDate() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000)
                 .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(String.format("{\"id\":100003,\"date\":\"%s\",\"dishes\":[{\"id\":100008,\"name\":\"Картошка\",\"price\":14500},{\"id\":100009,\"name\":\"Котлета\",\"price\":9000},{\"id\":100010,\"name\":\"Салат\",\"price\":16000}]}", nowDate())));
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getForbidden() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL_R100000)
+                .with(userHttpBasic("User1", "user1")))
+                .andExpect(status().isForbidden());
     }
 }
