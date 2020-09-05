@@ -1,6 +1,8 @@
 package lunchrating.controller;
 
 import lunchrating.AbstractControllerTest;
+import lunchrating.controller.menu.AdminMenuController;
+import lunchrating.controller.restaurant.AdminRestaurantController;
 import lunchrating.model.Dish;
 import lunchrating.service.DishService;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DishControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL_R100000_M100002 =
-            RestaurantController.REST_URL + "/100000"
-                    + MenuController.REST_URL_MENU + "/100002"
+            AdminRestaurantController.REST_URL + "/100000"
+                    + AdminMenuController.REST_URL_MENU + "/100002"
                     + DishController.REST_URL_DISH + '/';
 
     @Autowired

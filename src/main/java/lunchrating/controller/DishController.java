@@ -1,5 +1,6 @@
 package lunchrating.controller;
 
+import lunchrating.controller.menu.AdminMenuController;
 import lunchrating.model.Dish;
 import lunchrating.service.DishService;
 import lunchrating.util.ValidationUtil;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class DishController {
 
     static final String REST_URL_DISH = "/dish";
-    static final String REST_URL = MenuController.REST_URL + "/{menuId}" + REST_URL_DISH;
+    static final String REST_URL = AdminMenuController.REST_URL + "/{menuId}" + REST_URL_DISH;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
