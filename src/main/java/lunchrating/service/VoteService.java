@@ -1,9 +1,11 @@
 package lunchrating.service;
 
+import lunchrating.model.User;
 import lunchrating.model.Vote;
 import lunchrating.repository.VoteRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,5 +35,9 @@ public class VoteService {
 
     public void update(Vote vote) {
         repository.save(vote);
+    }
+
+    public Vote getByUserAndDate(User user, LocalDate date){
+        return repository.getByUserAndDate(user, date);
     }
 }

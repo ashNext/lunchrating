@@ -45,6 +45,6 @@ INSERT INTO vote (rest_id, user_id, date)
 VALUES (100000, 100017, DATE_SUB(NOW(), 1 DAY )),
        (100001, 100018, DATE_SUB(NOW(), 1 DAY )),
        (100000, 100019, DATE_SUB(NOW(), 1 DAY )),
-       (100001, 100017, NOW()),
+--        (100001, 100017, NOW()),
        (100000, 100018, NOW()),
        (100001, 100019, NOW());

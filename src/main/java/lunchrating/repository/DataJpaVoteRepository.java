@@ -1,8 +1,10 @@
 package lunchrating.repository;
 
+import lunchrating.model.User;
 import lunchrating.model.Vote;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -32,5 +34,10 @@ public class DataJpaVoteRepository implements VoteRepository {
     @Override
     public Vote save(Vote vote) {
         return crudRepository.save(vote);
+    }
+
+    @Override
+    public Vote getByUserAndDate(User user, LocalDate date) {
+        return crudRepository.getByUserAndDate(user, date);
     }
 }
