@@ -15,7 +15,5 @@ public interface MenuRepository {
 
     Menu save(Menu menu, Integer restId);
 
-    Menu getWithDishes(Integer id, Integer restId);
-
     Menu getWithDishesOnDate(int restId, LocalDate date);
 }

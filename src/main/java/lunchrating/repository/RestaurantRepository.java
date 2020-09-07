@@ -16,8 +16,6 @@ public interface RestaurantRepository {
 
     Restaurant save(Restaurant restaurant);
 
-    Restaurant getWithMenus(Integer id);
-
     Restaurant getWithMenusOnDate(int id, LocalDate date);
 
     List<RestaurantTo> getAllWithRate();

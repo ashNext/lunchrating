@@ -37,10 +37,6 @@ public class RestaurantService {
         repository.save(restaurant);
     }
 
-    public Restaurant getWithMenus(Integer id) {
-        return repository.getWithMenus(id);
-    }
-
     public Restaurant getWithMenusOnDate(int id, LocalDate date) {
         return repository.getWithMenusOnDate(id, date);
     }

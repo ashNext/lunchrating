@@ -36,10 +36,6 @@ public class MenuService {
         repository.save(restaurant, restId);
     }
 
-    public Menu getWithDishes(Integer id, Integer restId) {
-        return repository.getWithDishes(id, restId);
-    }
-
     public Menu getWithDishesOnDate(Integer restId, LocalDate date) {
         return repository.getWithDishesOnDate(restId, date);
     }

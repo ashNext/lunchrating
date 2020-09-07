@@ -37,13 +37,8 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public Restaurant getWithMenus(Integer id) {
-        return crudRepository.getWithMenus(id);
-    }
-
-    @Override
     public Restaurant getWithMenusOnDate(int id, LocalDate date) {
-        return crudRepository.getWithMenusOnDate(id, date);
+        return crudRepository.getWithMenusOnDate(id, date).orElse(null);
     }
 
     @Override
