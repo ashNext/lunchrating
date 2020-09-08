@@ -1,8 +1,12 @@
 package lunchrating.service;
 
 import lunchrating.model.Menu;
-import lunchrating.repository.MenuRepository;
+import lunchrating.repository.CrudMenuRepository;
+import lunchrating.repository.CrudRestaurantRepository;
+import lunchrating.util.ValidationUtil;
+import lunchrating.util.exception.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,33 +14,44 @@ import java.util.List;
 @Service
 public class MenuService {
 
-    private final MenuRepository repository;
+    private final CrudMenuRepository repository;
+    private final CrudRestaurantRepository restaurantRepository;
 
-    public MenuService(MenuRepository repository) {
+    public MenuService(CrudMenuRepository repository, CrudRestaurantRepository restaurantRepository) {
         this.repository = repository;
+        this.restaurantRepository = restaurantRepository;
     }
 
-    public List<Menu> getAll(Integer restId) {
+    public List<Menu> getAll(int restId) {
         return repository.getAll(restId);
     }
 
-    public Menu get(Integer id, Integer restId) {
-        return repository.get(id, restId);
+    public Menu get(int id, int restId) {
+        return repository.findById(id)
+                .filter(menu -> menu.getRestaurant().getId().equals(restId))
+                .orElseThrow(() -> new NotFoundException(String.format("id=%s, restId=%s", id, restId)));
     }
 
-    public boolean delete(Integer id, Integer restId) {
-        return repository.delete(id, restId);
+    public void delete(int id, int restId) {
+        ValidationUtil.checkNotFoundWithId(repository.delete(id, restId) != 0, id);
     }
 
-    public Menu create(Menu restaurant, Integer restId) {
-        return repository.save(restaurant, restId);
+    @Transactional
+    public Menu create(Menu menu, int restId) {
+        menu.setRestaurant(restaurantRepository.getOne(restId));
+        return repository.save(menu);
     }
 
-    public void update(Menu restaurant, Integer restId) {
-        repository.save(restaurant, restId);
+    @Transactional
+    public void update(Menu menu, int restId) {
+        get(menu.getId(), restId);
+
+        menu.setRestaurant(restaurantRepository.getOne(restId));
+        repository.save(menu);
     }
 
-    public Menu getWithDishesOnDate(Integer restId, LocalDate date) {
-        return repository.getWithDishesOnDate(restId, date);
+    public Menu getWithDishesOnDate(int restId, LocalDate date) {
+        return repository.getWithDishesOnDate(restId, date)
+                .orElseThrow(() -> new NotFoundException(String.format("restId=%s, date=%s", restId, date)));
     }
 }

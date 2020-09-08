@@ -2,42 +2,41 @@ package lunchrating.service;
 
 import lunchrating.model.User;
 import lunchrating.model.Vote;
-import lunchrating.repository.VoteRepository;
+import lunchrating.repository.CrudRestaurantRepository;
+import lunchrating.repository.CrudVoteRepository;
+import lunchrating.util.exception.DeniedToVoteException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 
 @Service
 public class VoteService {
 
-    private final VoteRepository repository;
+    private final CrudVoteRepository repository;
+    private final CrudRestaurantRepository restaurantRepository;
 
-    public VoteService(VoteRepository repository) {
+
+    public VoteService(CrudVoteRepository repository, CrudRestaurantRepository restaurantRepository) {
         this.repository = repository;
+        this.restaurantRepository = restaurantRepository;
     }
 
-    public List<Vote> getAll() {
-        return repository.getAll();
-    }
+    @Transactional
+    public void voting(int restId, User user, LocalDate date) {
+        Vote vote = getByUserAndDate(user, date);
 
-    public Vote get(Integer id) {
-        return repository.get(id);
-    }
+        if (vote.getId() != null && !LocalTime.now().isBefore(LocalTime.of(23, 0, 0))) {
+            throw new DeniedToVoteException(String.format("restId=%s, userId=%s, date=%s", restId, user.getId(), date));
+        }
 
-    public boolean delete(Integer id) {
-        return repository.delete(id);
-    }
-
-    public Vote create(Vote vote) {
-        return repository.save(vote);
-    }
-
-    public void update(Vote vote) {
+        vote.setRestaurant(restaurantRepository.getOne(restId));
         repository.save(vote);
     }
 
-    public Vote getByUserAndDate(User user, LocalDate date){
-        return repository.getByUserAndDate(user, date);
+    public Vote getByUserAndDate(User user, LocalDate date) {
+        return repository.getByUserAndDate(user, date)
+                .orElse(new Vote(null, user, date));
     }
 }

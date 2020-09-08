@@ -34,17 +34,17 @@ public abstract class AbstractRestaurantController {
 
     public Restaurant get(int id) {
         log.info("get {}", id);
-        return ValidationUtil.checkNotFoundWithId(service.get(id), id);
+        return service.get(id);
     }
 
     public Restaurant getWithMenusOnDate(int id, LocalDate date) {
         log.info("get {} with menus on date {}", id, date);
-        return ValidationUtil.checkNotFoundWithId(service.getWithMenusOnDate(id, date), id);
+        return service.getWithMenusOnDate(id, date);
     }
 
     public void delete(int id) {
         log.info("delete {}", id);
-        ValidationUtil.checkNotFoundWithId(service.delete(id), id);
+        service.delete(id);
     }
 
     public Restaurant create(Restaurant restaurant) {

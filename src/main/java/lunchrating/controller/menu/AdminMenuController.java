@@ -35,7 +35,7 @@ public class AdminMenuController extends AbstractMenuController {
     @Override
     @GetMapping
     public Menu getOnDate(@PathVariable int restId, @RequestParam(required = false, defaultValue = "today") LocalDate date) {
-        return ValidationUtil.checkNotFound(super.getOnDate(restId, date), "date=" + date);
+        return super.getOnDate(restId, date);
     }
 
     @Override

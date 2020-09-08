@@ -5,6 +5,7 @@ import lunchrating.controller.menu.AdminMenuController;
 import lunchrating.controller.restaurant.AdminRestaurantController;
 import lunchrating.model.Dish;
 import lunchrating.service.DishService;
+import lunchrating.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static lunchrating.TestUtil.userHttpBasic;
 import static lunchrating.controller.json.JacksonObjectMapper.getMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,7 +56,7 @@ class DishControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertNull(service.get(100007, 100002));
+        assertThrows(NotFoundException.class, () -> service.get(100007, 100002));
     }
 
     @Test

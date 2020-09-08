@@ -1,9 +1,9 @@
 package lunchrating.controller.restaurant;
 
 import lunchrating.AbstractControllerTest;
-import lunchrating.controller.restaurant.AdminRestaurantController;
 import lunchrating.model.Restaurant;
 import lunchrating.service.RestaurantService;
+import lunchrating.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -51,7 +51,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic("Admin", "admin")))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertNull(service.get(100001));
+        assertThrows(NotFoundException.class, () -> service.get(100001));
     }
 
     @Test

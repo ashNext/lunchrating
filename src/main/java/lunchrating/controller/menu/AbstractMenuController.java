@@ -26,17 +26,17 @@ public abstract class AbstractMenuController {
 
     public Menu get(int id, int restId) {
         log.info("get menu {} for restaurant {}", id, restId);
-        return ValidationUtil.checkNotFoundWithId(service.get(id, restId), id);
+        return service.get(id, restId);
     }
 
     public Menu getOnDate(int restId, @RequestParam(required = false, defaultValue = "today") LocalDate date) {
         log.info("get menu for restaurant {} on date {}", restId, date);
-        return ValidationUtil.checkNotFound(service.getWithDishesOnDate(restId, date), "date=" + date);
+        return service.getWithDishesOnDate(restId, date);
     }
 
     public void delete(int id, int restId) {
         log.info("delete menu {} for restaurant {}", id, restId);
-        ValidationUtil.checkNotFoundWithId(service.delete(id, restId), id);
+        service.delete(id, restId);
     }
 
     public Menu create(Menu menu, int restId) {

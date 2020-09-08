@@ -22,7 +22,7 @@ class UserRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":1},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":2}]"));
+                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":1},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":1}]"));
     }
 
     @Test
@@ -43,7 +43,7 @@ class UserRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":3},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":3}]"));
+                .andExpect(content().json("[{\"id\":100000,\"name\":\"Restaurant 1\",\"rate\":3},{\"id\":100001,\"name\":\"Restaurant 2\",\"rate\":2}]"));
     }
 
     @Test

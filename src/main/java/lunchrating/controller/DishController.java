@@ -40,14 +40,14 @@ public class DishController {
     @GetMapping("/{id}")
     public Dish get(@PathVariable int menuId, @PathVariable int id) {
         log.info("get {}", id);
-        return ValidationUtil.checkNotFoundWithId(service.get(id, menuId), id);
+        return service.get(id, menuId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int menuId, @PathVariable int id) {
         log.info("delete {}", id);
-        ValidationUtil.checkNotFoundWithId(service.delete(id, menuId), id);
+        service.delete(id, menuId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

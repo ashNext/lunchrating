@@ -9,13 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Vote v WHERE v.id=:id")
-    int delete(@Param("id") int id);
-
-    Vote getByUserAndDate(User user, LocalDate date);
+    Optional<Vote> getByUserAndDate(User user, LocalDate date);
 }
