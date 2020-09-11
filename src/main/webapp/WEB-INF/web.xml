@@ -7,6 +7,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:spring/spring-app.xml
+            classpath:spring/spring-time.xml
         </param-value>
     </context-param>
 

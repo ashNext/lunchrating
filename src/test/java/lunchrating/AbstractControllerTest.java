@@ -13,7 +13,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-mvc.xml"
+        "classpath:spring/spring-mvc.xml",
+        "classpath:spring/spring-time.xml"
 })
 @Transactional
 abstract public class AbstractControllerTest {
